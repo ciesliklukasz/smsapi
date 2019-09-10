@@ -8,14 +8,16 @@ class ReportPresenter
 {
     public function pushContent(Report $report): void
     {
-        echo $this->table($report->getDiff()->getAll());
+        echo $this->table($report);
     }
 
-    private function table($data): string
+    private function table(Report $report): string
     {
         $response = '';
+        $response.= 'File path: ' . $report->getFile()->getFilePath() . PHP_EOL;
+        $response.= 'File size: ' . $report->getFile()->getSize() . PHP_EOL;
 
-        foreach ($data as $key => $diffs)
+        foreach ($report->getDiff()->getAll() as $key => $diffs)
         {
             $response .= 'Compared file: ' . $key . PHP_EOL;
             foreach ($diffs as $diff)

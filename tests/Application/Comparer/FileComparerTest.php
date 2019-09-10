@@ -7,6 +7,7 @@ use App\Core\Builder\FileBuilder;
 use App\Core\Container\FileContainer;
 use App\Core\Exception\CompareFileNotRegisteredException;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class FileComparerTest extends TestCase
 {
@@ -20,7 +21,8 @@ class FileComparerTest extends TestCase
     protected function setUp(): void
     {
         $this->builder = new FileBuilder();
-        $this->comparer = new TextFileComparer();
+        $dispatcher = $this->getMockBuilder(EventDispatcher::class)->disableOriginalConstructor()->getMock();
+        $this->comparer = new TextFileComparer($dispatcher);
         $this->container = new FileContainer();
     }
 
@@ -56,7 +58,6 @@ class FileComparerTest extends TestCase
 
         $this->container->addFile($this->builder->build($filePath1));
         $this->container->addFileToCompare($this->builder->build($filePath2));
-        $this->comparer = new TextFileComparer();
         $this->comparer->compare($this->container);
         $diffContainer = $this->comparer->getDiffContainer();
 

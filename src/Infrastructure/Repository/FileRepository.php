@@ -17,10 +17,13 @@ class FileRepository implements RepositoryInterface
 
         if (false !== $handle)
         {
+            fwrite($handle, 'File path: ' . $report->getFile()->getFilePath() . PHP_EOL);
+            fwrite($handle, 'File size: ' . $report->getFile()->getSize() . PHP_EOL);
             foreach ($report->getDiff()->getAll() as $fileDiff)
             {
                 foreach ($fileDiff as $file =>$item)
                 {
+                    fwrite($handle,'Compared file path: ' . $file . PHP_EOL);
                     fwrite($handle, $item);
                 }
             }
